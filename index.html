@@ -5,99 +5,291 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Video Portfolio</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+        /* Reset some default styles */
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar:hover {
+            background-color: #444;
+        }
+
+        .navbar .brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin-left: 1.5rem;
+        }
+
+        .navbar ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .navbar ul li a:hover {
+            color: #ff6347;
+        }
+
+        /* Header */
         header {
             background-color: #333;
             color: #fff;
-            padding: 2rem 1rem;
+            padding: 4rem 1rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
         header h1 {
-            margin: 0;
-            font-size: 2.5rem;
+            position: relative;
+            z-index: 2;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s ease-out;
         }
+
+        header p {
+            position: relative;
+            z-index: 2;
+            font-size: 1.2rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        /* Container */
         .container {
             padding: 2rem 1rem;
             max-width: 1200px;
             margin: auto;
+            animation: fadeIn 2s ease-in;
         }
+
+        /* Section Title */
+        .container h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: #333;
+        }
+
+        /* Video Gallery */
         .video-gallery {
             display: flex;
             flex-wrap: wrap;
             gap: 1.5rem;
             justify-content: center;
         }
+
         .video-item {
             background-color: #fff;
             padding: 1rem;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             width: 300px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
+
+        .video-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
         .video-item iframe {
             width: 100%;
             height: 170px;
             border: none;
             border-radius: 4px;
+            transition: transform 0.3s ease;
         }
+
+        .video-item:hover iframe {
+            transform: scale(1.05);
+        }
+
         .video-item h3 {
             margin: 0.5rem 0;
             font-size: 1.2rem;
             color: #333;
+            text-align: center;
         }
+
         .video-item p {
             color: #666;
             font-size: 0.9rem;
+            text-align: center;
         }
+
+        /* Footer */
         footer {
             background-color: #333;
             color: #fff;
             text-align: center;
             padding: 1rem;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            margin-top: 2rem;
         }
-        @media (max-width: 600px) {
-            .video-item {
-                width: 100%;
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .video-gallery {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navbar ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navbar ul li {
+                margin: 0.5rem 0;
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="brand">My Portfolio</div>
+        <ul>
+            <li><a href="#videos">Videos</a></li>
+            <li><a href="https://github.com/your-username" target="_blank">GitHub</a></li>
+            <li><a href="https://linkedin.com/in/your-profile" target="_blank">LinkedIn</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header Section -->
     <header>
         <h1>My Video Portfolio</h1>
+        <p>Showcasing my recent AI and mathematical projects through videos</p>
     </header>
 
-    <div class="container">
+    <!-- Main Content -->
+    <div class="container" id="videos">
         <h2>Here are some things I made recently</h2>
         <div class="video-gallery">
             <!-- Video Item 1 -->
             <div class="video-item">
-                <iframe src="https://www.youtube.com/embed/VIDEO_ID_1" title="Video 1" allowfullscreen></iframe>
+                <iframe src="https://drive.google.com/file/d/14Rvf11JClFz4JZ68GAqMBubcz114m5Uq/preview" 
+                        title="Project Video 1" allow="autoplay"></iframe>
                 <h3>Project Title 1</h3>
                 <p>Brief description of what this video/project is about.</p>
             </div>
             <!-- Video Item 2 -->
             <div class="video-item">
-                <iframe src="https://www.youtube.com/embed/VIDEO_ID_2" title="Video 2" allowfullscreen></iframe>
+                <iframe src="https://drive.google.com/file/d/17yeE1z_RdUyyfkZVdyai3e6NWX2wo06G/preview" 
+                        title="Project Video 2" allow="autoplay"></iframe>
                 <h3>Project Title 2</h3>
                 <p>Brief description of what this video/project is about.</p>
             </div>
-            <!-- Add more video items as needed -->
+            <!-- Video Item 3 -->
+            <div class="video-item">
+                <iframe src="https://drive.google.com/file/d/1DJHXHtY9nsSpjrkU8t9_bhyODwZckkLY/preview" 
+                        title="Project Video 3" allow="autoplay"></iframe>
+                <h3>Project Title 3</h3>
+                <p>Brief description of what this video/project is about.</p>
+            </div>
+            <!-- Video Item 4 -->
+            <div class="video-item">
+                <iframe src="https://drive.google.com/file/d/1Mb2WzWNkYAwhZSkZ-IOVI1TrAGbnMoiN/preview" 
+                        title="Project Video 4" allow="autoplay"></iframe>
+                <h3>Project Title 4</h3>
+                <p>Brief description of what this video/project is about.</p>
+            </div>
+            <!-- Video Item 5 -->
+            <div class="video-item">
+                <iframe src="https://drive.google.com/file/d/1jc4Q0Wum51XAuEDncwU9rzhHp9nmUR5S/preview" 
+                        title="Project Video 5" allow="autoplay"></iframe>
+                <h3>Project Title 5</h3>
+                <p>Brief description of what this video/project is about.</p>
+            </div>
+            <!-- Video Item 6 -->
+            <div class="video-item">
+                <iframe src="https://drive.google.com/file/d/1zqyyk009BWZsI-CHo2MtPkQDCy3EVbBT/preview" 
+                        title="Project Video 6" allow="autoplay"></iframe>
+                <h3>Project Title 6</h3>
+                <p>Brief description of what this video/project is about.</p>
+            </div>
         </div>
     </div>
 
+    <!-- Footer -->
     <footer>
         &copy; 2024 Your Name. All rights reserved.
     </footer>
 
+    <!-- Optional JavaScript for Additional Interactivity -->
+    <script>
+        // Example: Smooth Scrolling for Navigation Links
+        document.querySelectorAll('.navbar a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
