@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Video Portfolio</title>
+    <title>My Video and Image Portfolio</title>
     <style>
         /* Reset some default styles */
         * {
@@ -17,6 +17,8 @@
             background-color: #f4f4f4;
             line-height: 1.6;
             color: #333;
+            position: relative;
+            overflow-x: hidden;
         }
 
         /* Navigation Bar */
@@ -38,8 +40,8 @@
         }
 
         .navbar .brand {
+            font-family: 'Blackadder ITC', cursive;
             font-size: 1.5rem;
-            font-weight: bold;
         }
 
         .navbar ul {
@@ -70,6 +72,13 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            background-image: url('Pics/6.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         header::after {
@@ -84,11 +93,18 @@
         }
 
         header h1 {
-            position: relative;
+            position: absolute;
             z-index: 2;
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 90pt;
             animation: fadeInDown 1s ease-out;
+            font-family: 'Bradley Hand ITC', cursive;
+            color: #fff;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+            text-align: center;
+            width: 100%;
         }
 
         header p {
@@ -163,147 +179,401 @@
             text-align: center;
         }
 
-        /* Footer */
-        footer {
-            background-color: #333;
-            color: #fff;
+        /* Image Gallery Styles */
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .image-gallery img {
+            width: 2.13in;
+            height: 2.13in;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .image-gallery img:nth-child(1),
+        .image-gallery img:nth-child(7) {
+            width: 3.72in;
+            height: 2.13in;            
+        }
+
+        .image-gallery img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        /* Modal for Enlarged Images */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Theater Mode */
+        .theater-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .theater-mode.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+        }
+
+        .theater-mode iframe {
+            width: 90%;
+            height: 80%;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: all 0.5s ease;
+        }
+
+        .exit-theater {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .exit-theater:hover {
+            color: #ff6347;
+            transform: scale(1.1);
+        }
+
+        /* Music Control Panel */
+        .music-control {
+            position: fixed;
+            top: calc(20px + 1.5cm);  /* 4 cm lower */
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-image: url('Songs/bird-image1.png');
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .music-control:hover {
+            width: 200px;
+            height: auto;
+            border-radius: 10px;
+            background-image: url('Songs/bird1.gif');
+        }
+
+        .music-control-content {
+            display: none;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .music-control:hover .music-control-content {
+            display: block;
+        }
+
+        /* Play Music Button */
+        #playMusicButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+            height: 100px;
+            background-image: url('Songs/venti_peep.png');
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            z-index: 1001;
+            background-color: transparent;
+            border: none;
+            font-size: 14px;
+            color: #000;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            white-space: nowrap;
+        }
+        /* Chat Tab Styles */
+        .chat-tab {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: rgba(128, 128, 128, 0.7);
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        .chat-menu {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            transition: left 0.3s ease;
+            z-index: 1003;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .chat-menu.active {
+            left: 0;
+        }
+
+        .chat-menu h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #333;
             text-align: center;
-            padding: 1rem;
-            margin-top: 2rem;
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .chat-menu p {
+            font-size: 1rem;
+            line-height: 1.2;
+            margin-bottom: 5px;
+            color: #666;
         }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .chat-menu button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            margin: 4px auto;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .chat-menu button:hover {
+            background-color: #45a049;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .video-gallery {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .navbar ul {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .navbar ul li {
-                margin: 0.5rem 0;
-            }
+        /* Background Text Styles */
+        .background-text {
+            position: fixed;
+            font-size: 24px;
+            opacity: 0.9;
+            pointer-events: none;
+            z-index: -1;
+            transition: top 0.5s linear;
         }
+
+        /* New styles for Ink Free font */
+        .ink-free-text {
+            font-family: 'Ink Free', cursive;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
 
     <!-- Navigation Bar -->
     <nav class="navbar">
-        <div class="brand">My Portfolio</div>
+        <div class="brand">Maybe, it's not so real after all</div>
         <ul>
-            <li><a href="#videos">Videos</a></li>
-            <li><a href="https://github.com/your-username" target="_blank">GitHub</a></li>
-            <li><a href="https://linkedin.com/in/your-profile" target="_blank">LinkedIn</a></li>
+            <li><a href="#videos">???</a></li>
+            <li><a href="https://github.com/your-username" target="_blank">??%@#</a></li>
+            <li><a href="https://linkedin.com/in/your-profile" target="_blank">98$%20#</a></li>
         </ul>
     </nav>
 
     <!-- Header Section -->
     <header>
-        <h1>My Video Portfolio</h1>
-        <p>Showcasing my recent AI and mathematical projects through videos</p>
+        <h1>Welcome to my world</h1>
     </header>
 
     <!-- Main Content -->
     <div class="container" id="videos">
-        <h2>Here are some things I made recently</h2>
         <div class="video-gallery">
             <!-- Video Item 1 -->
             <div class="video-item">
                 <iframe src="https://drive.google.com/file/d/14Rvf11JClFz4JZ68GAqMBubcz114m5Uq/preview" 
                         title="Project Video 1" allow="autoplay"></iframe>
-                <h3>Project Title 1</h3>
-                <p>Brief description of what this video/project is about.</p>
+                <h3>AI Tests</h3>
+                <!-- Brief description of what this video/project is about. -->
+                <button onclick="enterTheaterMode(this)">Theater Mode</button>
             </div>
             <!-- Video Item 2 -->
             <div class="video-item">
                 <iframe src="https://drive.google.com/file/d/17yeE1z_RdUyyfkZVdyai3e6NWX2wo06G/preview" 
                         title="Project Video 2" allow="autoplay"></iframe>
-                <h3>Project Title 2</h3>
-                <p>Brief description of what this video/project is about.</p>
+                <h3>Virus/Molecular Simulation</h3>
+                <!-- Brief description of what this video/project is about. -->
+                <button onclick="enterTheaterMode(this)">Theater Mode</button>
             </div>
             <!-- Video Item 3 -->
             <div class="video-item">
                 <iframe src="https://drive.google.com/file/d/1DJHXHtY9nsSpjrkU8t9_bhyODwZckkLY/preview" 
                         title="Project Video 3" allow="autoplay"></iframe>
-                <h3>Project Title 3</h3>
-                <p>Brief description of what this video/project is about.</p>
+                <h3>Open Game</h3>
+                <!-- Brief description of what this video/project is about. -->
+                <button onclick="enterTheaterMode(this)">Theater Mode</button>
             </div>
             <!-- Video Item 4 -->
             <div class="video-item">
                 <iframe src="https://drive.google.com/file/d/1Mb2WzWNkYAwhZSkZ-IOVI1TrAGbnMoiN/preview" 
                         title="Project Video 4" allow="autoplay"></iframe>
-                <h3>Project Title 4</h3>
-                <p>Brief description of what this video/project is about.</p>
+                <h3>Open Game, Added Main Menu</h3>
+                <!-- Brief description of what this video/project is about. -->
+                <button onclick="enterTheaterMode(this)">Theater Mode</button>
             </div>
             <!-- Video Item 5 -->
             <div class="video-item">
                 <iframe src="https://drive.google.com/file/d/1jc4Q0Wum51XAuEDncwU9rzhHp9nmUR5S/preview" 
                         title="Project Video 5" allow="autoplay"></iframe>
-                <h3>Project Title 5</h3>
-                <p>Brief description of what this video/project is about.</p>
+                <h3>Universe Simulation (from smallest to largest)</h3>
+                <!-- Brief description of what this video/project is about. -->
+                <button onclick="enterTheaterMode(this)">Theater Mode</button>
             </div>
             <!-- Video Item 6 -->
             <div class="video-item">
                 <iframe src="https://drive.google.com/file/d/1zqyyk009BWZsI-CHo2MtPkQDCy3EVbBT/preview" 
                         title="Project Video 6" allow="autoplay"></iframe>
-                <h3>Project Title 6</h3>
-                <p>Brief description of what this video/project is about.</p>
+                <h3>Second Reality/Digital Sim etc.</h3>
+                <!-- Brief description of what this video/project is about. -->
+                <button onclick="enterTheaterMode(this)">Theater Mode</button>
             </div>
         </div>
-
+        <br>
         <!-- Image Gallery Section -->
-        <h2>Here are some pictures (out of ~200) I made in 5 days with AI</h2>
+        <h2>Generated Pictures</h2>
         <div class="image-gallery">
             <!-- Image 1 -->
-            <img src="Pics/1.jpg" alt="AI Generated Image 1">
+            <img src="Pics/1.jpg" alt="AI Generated Image 1" onclick="openModal(this)">
             <!-- Image 2 -->
-            <img src="Pics/2.jpg" alt="AI Generated Image 2">
+            <img src="Pics/2.jpg" alt="AI Generated Image 2" onclick="openModal(this)">
             <!-- Image 3 -->
-            <img src="Pics/3.jpg" alt="AI Generated Image 3">
+            <img src="Pics/3.jpg" alt="AI Generated Image 3" onclick="openModal(this)">
             <!-- Image 4 -->
-            <img src="Pics/4.jpg" alt="AI Generated Image 4">
+            <img src="Pics/4.jpg" alt="AI Generated Image 4" onclick="openModal(this)">
             <!-- Image 5 -->
-            <img src="Pics/5.jpg" alt="AI Generated Image 5">
+            <img src="Pics/5.jpg" alt="AI Generated Image 5" onclick="openModal(this)">
             <!-- Image 6 -->
-            <img src="Pics/6.jpg" alt="AI Generated Image 6">
+            <img src="Pics/6.jpg" alt="AI Generated Image 6" onclick="openModal(this)">
             <!-- Image 7 -->
-            <img src="Pics/7.jpg" alt="AI Generated Image 7">
+            <img src="Pics/7.jpeg" alt="AI Generated Image 7" onclick="openModal(this)">
             <!-- Image 8 -->
-            <img src="Pics/8.jpg" alt="AI Generated Image 8">
+            <img src="Pics/8.jpg" alt="AI Generated Image 8" onclick="openModal(this)">
             <!-- Image 9 -->
-            <img src="Pics/9.jpg" alt="AI Generated Image 9">
+            <img src="Pics/9.jpg" alt="AI Generated Image 9" onclick="openModal(this)">
             <!-- Image 10 -->
-            <img src="Pics/10.jpg" alt="AI Generated Image 10">
+            <img src="Pics/10.jpg" alt="AI Generated Image 10" onclick="openModal(this)">
             <!-- Image 11 -->
-            <img src="Pics/11.jpg" alt="AI Generated Image 11">
+            <img src="Pics/11.jpg" alt="AI Generated Image 11" onclick="openModal(this)">
         </div>
+    </div>
+
+    <!-- Modal for Enlarged Images -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="enlargedImage">
+    </div>
+
+    <!-- Theater Mode Container -->
+    <div id="theaterMode" class="theater-mode">
+        <span class="exit-theater" onclick="exitTheaterMode()">&times;</span>
+        <iframe id="theaterVideo" src="" frameborder="0" allow="autoplay; fullscreen"></iframe>
+    </div>
+
+    <!-- Music Control Panel -->
+    <div class="music-control">
+        <div class="music-control-content">
+            <select id="songSelect" onchange="changeSong()">
+                <option value="Songs/17-Variation 28 (tutti).mp3">Variation 28 (tutti)</option>
+                <option value="Songs/06 Everything Happens to Me_1.mp3">Everything Happens to Me</option>
+                <option value="Songs/09 Never Had a Dream Come True.mp3">Never Had a Dream Come True</option>
+                <option value="Songs/01 - Best Of My Love_1.mp3">Best Of My Love</option>
+                <option value="Songs/Natalia Kills - Umi no Mieru.mp3">Natalia Kills - Umi no Mieru</option>
+            </select>
+            <input type="range" id="volumeControl" min="0" max="2" step="0.1" value="1" onchange="changeVolume()">
+        </div>
+    </div>
+
+    <!-- Chat Tab -->
+    <div class="chat-tab" onclick="toggleChatMenu()">Chat</div>
+
+    <!-- Chat Menu -->
+    <div class="chat-menu" id="chatMenu">
+        <h2>Welcome to My Digital World</h2>        
+        <p class="ink-free-text">            
+            Explore the boundaries of reality and imagination - <br>
+            - through AI-generated content<br>
+            , simulations,<br>
+            -<br>
+            and interactive experiences.<br>
+            Are you ready to question what's real?<br>                    
+        </p>
+        <br>
+        <button class="ink-free-text" onclick="enterRabbitHole()">Enter the Rabbit Hole</button>
     </div>
 
     <!-- Footer -->
     <footer>
         &copy; 2024 Your Name. All rights reserved.
     </footer>
+
+    <!-- Audio Player -->
+    <audio id="backgroundMusic" loop autoplay>
+        <source src="Songs/Natalia Kills - Umi no Mieru.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <!-- Optional JavaScript for Additional Interactivity -->
     <script>
@@ -317,6 +587,160 @@
                 });
             });
         });
+
+        // Image Modal Functionality
+        function openModal(img) {
+            var modal = document.getElementById("imageModal");
+            var modalImg = document.getElementById("enlargedImage");
+            modal.style.display = "block";
+            modalImg.src = img.src;
+        }
+
+        function closeModal() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+
+        // Background Music Control
+        window.onload = function() {
+            var music = document.getElementById("backgroundMusic");
+            music.volume = 1; // Set volume to 100%
+            playBackgroundMusic();
+            createBackgroundTexts();
+        }
+
+        function playBackgroundMusic() {
+            var music = document.getElementById("backgroundMusic");
+            music.play().then(() => {
+                // Autoplay started successfully
+                console.log("Background music is playing.");
+            }).catch(function(error) {
+                console.log("Autoplay prevented: ", error);
+                // Show the play button
+                var playButton = document.getElementById("playMusicButton");
+                if (!playButton) {
+                    // Create and show the play button
+                    var playButton = document.createElement('div');
+                    playButton.id = "playMusicButton";
+                    document.body.appendChild(playButton);
+
+                    playButton.addEventListener('click', function() {
+                        music.play().then(() => {
+                            console.log("Background music started by user.");
+                            playButton.remove(); // Remove the button after playing
+                        }).catch(function(error) {
+                            console.log("Playback failed: ", error);
+                        });
+                    });
+                }
+            });
+        }
+
+        // Theater Mode Functionality
+        function enterTheaterMode(button) {
+            var videoSrc = button.parentElement.querySelector('iframe').src;
+            document.getElementById('theaterVideo').src = videoSrc;
+            var theaterMode = document.getElementById('theaterMode');
+            theaterMode.style.display = 'flex';
+            setTimeout(() => {
+                theaterMode.classList.add('active');
+            }, 50);
+        }
+
+        function exitTheaterMode() {
+            var theaterMode = document.getElementById('theaterMode');
+            theaterMode.classList.remove('active');
+            setTimeout(() => {
+                theaterMode.style.display = 'none';
+                document.getElementById('theaterVideo').src = '';
+            }, 500);
+        }
+
+        // Music Control Functions
+        function changeSong() {
+            var music = document.getElementById("backgroundMusic");
+            var songSelect = document.getElementById("songSelect");
+            music.src = songSelect.value;
+            music.play().catch(function(error) {
+                console.log("Playback failed: ", error);
+            });
+        }
+
+        function changeVolume() {
+            var music = document.getElementById("backgroundMusic");
+            var volumeControl = document.getElementById("volumeControl");
+            music.volume = volumeControl.value;
+        }
+
+        // Chat Menu Functionality
+        function toggleChatMenu() {
+            var chatMenu = document.getElementById('chatMenu');
+            chatMenu.classList.toggle('active');
+        }
+
+        // Close Chat Menu when clicking outside
+        document.addEventListener('click', function(event) {
+            var chatMenu = document.getElementById('chatMenu');
+            var chatTab = document.querySelector('.chat-tab');
+            if (!chatMenu.contains(event.target) && !chatTab.contains(event.target)) {
+                chatMenu.classList.remove('active');
+            }
+        });
+
+        // Background Text Creation
+        function createBackgroundTexts() {
+            const texts = [
+                "But", "What is Reality?", "Are you real?", "What is real?",
+                "Is any of this real?", "Maybe, it's all in our heads",
+                "In our little minds", "Let us change", "Change",
+                "the real", "and the imaginary",
+                "Perception", "Illusion", "Truth", "Falsehood",
+                "Dreams", "Waking life", "Consciousness", "Subconscious",
+                "Reality is subjective", "What do you see?", "Look closer",
+                "Beyond the veil", "Hidden truths", "Layers of reality",
+                "Quantum reality", "Multiverse", "Parallel worlds",
+                "Time is an illusion", "Space-time continuum", "Dimensions",
+                "Perception shapes reality", "Mind over matter", "Thought creates",
+                "Reality bends", "Nothing is as it seems", "Question everything",
+                "The matrix", "Simulation theory", "Are we in a dream?",
+                "Wake up", "Open your mind", "Expand consciousness",
+                "Reality is malleable", "Shift your perspective", "Create your reality",
+                "The observer effect", "Quantum entanglement", "Superposition",
+                "Reality collapses", "Infinite possibilities", "Choose your path",
+                "Break free", "Transcend limitations", "Explore the unknown"
+            ];
+
+            const multiplier = Math.floor(Math.random() * 10) + 10; // Random number between 10 and 20
+            const expandedTexts = Array(multiplier).fill(texts).flat();
+
+            expandedTexts.forEach((text, index) => {
+                const textElement = document.createElement('div');
+                textElement.className = 'background-text';
+                textElement.innerHTML = Array.from(text).map(char => 
+                    `<span style="color: ${getRandomDarkColor()}; transform: rotate(${Math.random() * 20 - 10}deg);">${char}</span>`
+                ).join('');
+                textElement.style.left = `${Math.random() * 100}vw`;
+                textElement.style.top = `${100 + index * 15}vh`;  // Reduced spacing between texts
+                document.body.appendChild(textElement);
+            });
+
+            window.addEventListener('scroll', moveBackgroundTexts);
+        }
+
+        function getRandomDarkColor() {
+            return `hsl(${Math.random() * 360}, 100%, ${Math.random() * 30 + 20}%)`;
+        }
+
+        function moveBackgroundTexts() {
+            const scrollPosition = window.scrollY;
+            const texts = document.querySelectorAll('.background-text');
+            texts.forEach((text, index) => {
+                const newTop = 100 + index * 15 - scrollPosition * 0.1;  // Adjusted for new spacing and increased scroll speed
+                text.style.top = `${newTop}vh`;
+                if (newTop < -20) {
+                    text.style.top = `${100 + texts.length * 15}vh`;  // Adjusted to match new spacing
+                }
+            });
+        }
     </script>
 </body>
 </html>
