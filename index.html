@@ -459,7 +459,7 @@
                 <button onclick="enterTheaterMode(this)">Theater Mode</button>
             </div>
             <!-- Video Item 3 -->
-            div class="video-item">
+            <div class="video-item">
                 <iframe src="https://drive.google.com/file/d/1Mb2WzWNkYAwhZSkZ-IOVI1TrAGbnMoiN/preview" 
                         title="Project Video 3" allow="autoplay"></iframe>
                 <h3>Open Game</h3>
@@ -572,7 +572,7 @@
 
     <!-- Audio Player -->
     <audio id="backgroundMusic" loop autoplay>
-        <source src="Songs/Natalia Kills - Umi no Mieru.mp3" type="audio/mpeg">
+        <source src="Songs/01 - Best Of My Love_1.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
@@ -605,6 +605,7 @@
         window.onload = function() {
             var music = document.getElementById("backgroundMusic");
             music.volume = 1; // Set volume to 100%
+            music.max = 1; // Ensure max volume is set to 1 (100%)
             playBackgroundMusic();
             createBackgroundTexts();
         }
@@ -661,6 +662,7 @@
             var music = document.getElementById("backgroundMusic");
             var songSelect = document.getElementById("songSelect");
             music.src = songSelect.value;
+            music.volume = 1; // Set volume to 100% when changing song
             music.play().catch(function(error) {
                 console.log("Playback failed: ", error);
             });
